@@ -14,7 +14,10 @@ logger = get_logger(__name__)
 class ValidationService:
     """Service for validating metric requests"""
     
-    # Value ranges for different metric types
+    # Value ranges for different metric types (metric name -> (min, max)).
+    # ADF-3: health.body_temperature.celsius range is enforced here for OTel-style
+    # metric names. The dedicated temperature_validator.py uses settings-driven bounds;
+    # this entry provides defence-in-depth for the shared validation path.
     VALUE_RANGES = {
         "health.activity.steps": (0, 100000),
         "health.activity.distance": (0, 1000000),  # meters
@@ -27,6 +30,7 @@ class ValidationService:
         "health.glucose.level": (20, 600),
         "health.spo2.percentage": (70, 100),
         "health.sleep.quality": (0, 100),
+        "health.body_temperature.celsius": (34.0, 42.0),   # ADF-3 — default range
     }
     
     async def validate_request(
