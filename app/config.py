@@ -65,6 +65,17 @@ class Settings(BaseSettings):
     # Logging Settings
     LOG_LEVEL: str = "INFO"
     LOG_FORMAT: str = "json"
+
+    # Body temperature physiological range (ADF-3 / FR-003)
+    # Override via TEMP_MIN_CELSIUS and TEMP_MAX_CELSIUS environment variables.
+    TEMP_MIN_CELSIUS: float = Field(
+        default=34.0,
+        description="Lower physiological bound for body temperature validation (\u00b0C)",
+    )
+    TEMP_MAX_CELSIUS: float = Field(
+        default=42.0,
+        description="Upper physiological bound for body temperature validation (\u00b0C)",
+    )
     
     class Config:
         env_file = ".env"
